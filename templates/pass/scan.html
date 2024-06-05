@@ -1,0 +1,70 @@
+{% extends 'pass/layouts/main.html' %}
+{% block title %}
+  Scan
+{% endblock title %} 
+
+{% block content %}
+<style>
+    body {
+        background-image: url('static/images/bgg.jpg');
+        background-size: cover;
+    }
+
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 300px;
+    }
+
+    .card-header {
+        background-color: #5e72e4;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .btn {
+        background-color: #5e72e4;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+        width: 100%;
+    }
+
+    .btn:hover {
+        background-color: #4b5a99;
+    }
+</style>
+
+<div class="card-container">
+    <div class="card">
+        <div class="card-header">
+            <h1>QR Code Scanner</h1>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn">Start Scanning</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

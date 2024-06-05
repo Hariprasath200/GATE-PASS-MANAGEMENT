@@ -1,0 +1,93 @@
+{% extends 'pass/layouts/main.html' %}
+{% block title %}
+    HOD
+{% endblock title %} 
+
+{% block content %}
+    <style>
+             body {
+                background-image: url('static/images/bgg.jpg');
+    background-size: cover;
+  }
+
+      @media only screen and (max-width: 100px) {
+    /* CSS styles for screens smaller than 600px */
+}
+
+        body {
+            background-color: #9bb398; /* Change background color to light gray */
+        }
+        .card{
+            margin-inline-start: 20%;
+            margin-inline-end: -20%;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Students Information</h1>
+        <div class="row">
+            {% for student in students %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title" style="font-weight: bold;">Student name: {{ student.student_name }}</p>
+                            <p class="card-text" style="font-weight: bold;">Registration Number: {{ student.reg_no }}</p>
+                            <p class="card-text" style="font-weight: bold;">Email: {{ student.email }}</p>
+                            <p class="card-text" style="font-weight: bold;">Mobile Number: {{ student.mobile_number }}</p>
+                            <p class="card-text" style="font-weight: bold;">Description: {{ student.description }}</p>
+                            <p class="card-text" style="font-weight: bold;">Parent Name: {{ student.parent_name }}</p>
+                            <p class="card-text" style="font-weight: bold;">Parent Number: {{ student.parent_number }}</p>
+                            <p class="card-text" style="font-weight: bold;">Department: {{ student.department }}</p>
+                            <p class="card-text" style="font-weight: bold;">Incharge's Status: {{ student.incharge_status }}</p>
+                            <p class="card-text" style="font-weight: bold;">HOD Status: {{ student.hod_status }}</p>
+            
+              
+
+                            <!-- Buttons for updating status -->
+                            
+                            
+                            <form action="{% url 'update_hod_status' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="student_id" value="{{ student.id }}">
+                                {{ hod_status_form.as_p }}  <!-- Display the HOD status form -->
+                                <button type="submit" class="btn btn-primary">Update HOD Status</button>
+                            </form>
+                            
+                            <script>
+                                // JavaScript code to show alert/notification after form submission
+                                document.querySelectorAll('form').forEach(form => {
+                                    form.addEventListener('submit', async function(event) {
+                                        event.preventDefault();
+                                        const formData = new FormData(form);
+                                        const response = await fetch(form.action, {
+                                            method: form.method,
+                                            body: formData
+                                        });
+                                        if (response.ok) {
+                                            alert('Status updated successfully'); // You can replace this with your preferred notification method
+                                            // Optionally, you can add code to update the UI dynamically without reloading the page
+                                        } else {
+                                            alert('Failed to update status'); // You can replace this with your preferred notification method
+                                        }
+                                    });
+                                });
+                            </script>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+    

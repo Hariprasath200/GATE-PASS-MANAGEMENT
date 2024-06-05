@@ -1,0 +1,122 @@
+{% extends 'pass/layouts/main.html' %}
+{% block title %}
+  Qr Generator
+{% endblock title %} 
+
+{% block content %}
+  <h1>QR Code Generator</h1>
+
+  <div>
+    <p>QR Code Data:</p>
+    <p>{{ qr_data|linebreaksbr }}</p>
+  </div>
+
+ 
+
+  <form id="qrForm" method="post" action="{% url 'qr' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Generate QR Code</button>
+</form>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('qrForm').addEventListener('submit', function (event) {
+          event.preventDefault(); // Prevent form submission
+
+          // Submit the form using AJAX
+          var form = this;
+          var formData = new FormData(form);
+
+          fetch(form.action, {
+              method: form.method,
+              body: formData,
+              headers: {
+                  'X-CSRFToken': '{{ csrf_token }}'
+              }
+          })
+          .then(response => {
+              if (response.ok) {
+                  // If form submission is successful, show notification
+                  alert('QR Code generated successfully!');
+                  // You can customize the notification here, e.g., using a notification library
+                  form.reset(); // Reset the form
+              } else {
+                  // If there is an error, handle it accordingly
+                  throw new Error('Failed to generate QR Code');
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert('Failed to generate QR Code');
+          });
+      });
+  });
+</script>
+
+  
+  <style>
+         body {
+          background-image: url('static/images/bgg.jpg');
+    background-size: cover;
+  }
+    /* Form styling */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* CSRF token styling */
+input[type="hidden"] {
+    display: none;
+}
+
+/* Form field styling */
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Button styling */
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+  </style>
+  <script>
+    // JavaScript to allow users to change the time
+    document.addEventListener("DOMContentLoaded", function() {
+        var inTimeLimitField = document.getElementById("id_in_time_limit");
+
+        inTimeLimitField.addEventListener("change", function() {
+            // You can add validation logic here if needed
+            console.log("New in time limit:", inTimeLimitField.value);
+        });
+    });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,295 @@
+{% extends 'pass/layouts/main.html' %}
+
+{% block title %}
+  STUDENT
+{% endblock title %} 
+
+{% block content %}
+<script>
+    function updateQRCode() {
+        fetch("{% url 'qr' %}")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch QR Code');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const qrCodeUrl = URL.createObjectURL(blob);
+                document.getElementById('qrCodeImage').src = qrCodeUrl;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error
+            });
+    }
+
+    // Call updateQRCode when the page loads
+    document.addEventListener('DOMContentLoaded', updateQRCode);
+
+    // Optionally, you can trigger updateQRCode when a new QR code is generated
+    // For example, if you have a button that generates a new QR code
+    // document.getElementById('generateQRButton').addEventListener('click', updateQRCode);
+</script>
+
+<div class="topics-container">
+    <div class="topic" id="reservation">
+        <h3 style="margin-left: 10%;">Request Form</h3>
+    </div>
+
+    <div class="topic" id="direct">
+        <h4 style="margin-left: 25%;">My Request</h4>
+            
+    </div>
+
+    <div class="topic" id="collect">
+        <h3 style="margin-left: 27%;">My QR</h3>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('add-item-btn').addEventListener('click', function () {
+            document.getElementById('item-form-container').style.display = 'block';
+        });
+    });
+</script>
+
+<div class="details" id="reservationDetails">
+    <!-- Reservation details content goes here -->
+    <h1 style="color:rgb(241, 15, 15);font-weight:bold;">Request Form</h1>
+        <button id="add-item-btn" class="btn btn-primary" style="margin-left: 45%;margin-top: 10%;">Rise Request</button>
+        <div id="item-form-container" style="display: none;">
+            <form id="item-form" method="post">
+                {% csrf_token %}
+                <div class="container">
+                    <h1>Student Request Form</h1>
+                    <form method="post" class="my-form">
+                        <div class="form-group">
+                            <label for="id_student_name" style="color: red;font-size: large;background-color: black;">Student Name:</label>
+                            {{ form.student_name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_reg_no"style="color: red;font-size: large;background-color: black;">Reg No:</label>
+                            {{ form.reg_no }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email" style="color: red;font-size: large;background-color: black;">Email:</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_mobile_number" style="color: red;font-size: large;background-color: black;">Mobile Number:</label>
+                            {{ form.mobile_number }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_description" style="color: red;font-size: large;background-color: black;">Description:</label>
+                            {{ form.description }}
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="id_parent_name" style="color: red;font-size: large;background-color: black;">Parent Name:</label>
+                            {{ form.parent_name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_parent_number" style="color: red;font-size: large;background-color: black;">Parent Number:</label>
+                            {{ form.parent_number }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_department" style="color: red;font-size: large;background-color: black;">Department:</label>
+                            {{ form.department }}
+                        </div>
+                        <button type="submit" class="btn btn-primary" >Submit</button>
+                    
+                    </form>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="details" id="directDetails">
+    <h1 style="color:rgb(241, 15, 15);font-weight:bold;">My Request</h1>
+    <!-- Content for My Request section goes here -->
+    <div class="student-info-container">
+        <h1>Students Information</h1>
+        <div class="row">
+            {% for student in students %}
+                <div class="col-md-4">
+                    <div class="student-card">
+                        <div class="student-card-header" style="background-color: #007bff; color: #fff;">
+                            <h5 class="student-card-title">Student Information</h5>
+                        </div>
+                        <div class="student-card-body">
+                            <ul class="student-info-list">
+                                <li class="student-info-item"><strong>Student Name:</strong> {{ student.student_name }}</li>
+                                <li class="student-info-item"><strong>Registration Number:</strong> {{ student.reg_no }}</li>
+                                <li class="student-info-item"><strong>Email:</strong> {{ student.email }}</li>
+                                <li class="student-info-item"><strong>Mobile Number:</strong> {{ student.mobile_number }}</li>
+                                <li class="student-info-item"><strong>Description:</strong> {{ student.description }}</li>
+                                <li class="student-info-item"><strong>Parent Name:</strong> {{ student.parent_name }}</li>
+                                <li class="student-info-item"><strong>Parent Number:</strong> {{ student.parent_number }}</li>
+                                <li class="student-info-item"><strong>Department:</strong> {{ student.department }}</li>
+                                <li class="student-info-item"><strong>Incharge Status:</strong> {{ student.incharge_status }}</li>
+                                <li class="student-info-item"><strong>HOD Status:</strong> {{ student.hod_status }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="details" id="collectDetails">
+    <h1 style="color:rgb(241, 15, 15);font-weight:bold;">My QR</h1>
+    
+    <img src="static\images\qrc.png" alt="QR Code Image" class="qr-code-image">
+    <style>
+        .qr-code-image {
+            width: 300px; /* Adjust the width as needed */
+            height: 300px; /* Adjust the height as needed */
+            border: 2px solid #333; /* Border color */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+            display: block;
+            margin: 0 auto; /* Center the image horizontally */
+        }
+    </style>
+
+    
+</div>
+
+<style>
+    .student-info-container {
+    padding: 20px;
+}
+
+.student-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.student-card-header {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.student-card-title {
+    margin: 0;
+}
+
+.student-card-body {
+    padding: 10px;
+}
+
+.student-info-list {
+    list-style: none;
+    padding: 0;
+}
+
+.student-info-item {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.qr-code-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.qr-code-image {
+    width: 200px; /* Adjust size as needed */
+    height: auto;
+    border: 2px solid #333; /* Border color */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+}
+
+.topics-container {
+    display: flex;
+    justify-content: flex-start; /* Align items to the left */
+    margin-left: 25%;
+    margin-top: 3%;        
+}
+
+.topic {
+    margin-right: 10px; /* Add margin between topic divs */
+    cursor: pointer;
+    background-color: #f0f0f0; /* Background color */
+    padding: 10px; /* Padding around the content */
+    border-radius: 5px; /* Rounded corners */
+    max-width: 200px; /* Adjust the maximum width as needed */
+    width: 40%; /* Ensures the elements take full width of their container */
+}
+
+.details {
+    display: none;
+    margin-top: 10px;
+}
+
+.topic:hover {
+    background-color: #0fedf5; /* Darker background color on hover */
+}
+
+.active-topic {
+    background-color: #e102e9; /* Background color for active topic */
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+}
+
+@media (max-width: 600px) {
+    .btn {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+    function setActiveTopic(topicId) {
+        const topics = document.querySelectorAll('.topic');
+        topics.forEach(topic => {
+            topic.classList.remove('active-topic');
+        });
+        const activeTopic = document.getElementById(topicId);
+        activeTopic.classList.add('active-topic');
+    }
+
+    document.getElementById("reservation").addEventListener("click", function() {
+        document.getElementById("reservationDetails").style.display = "block";
+        document.getElementById("directDetails").style.display = "none";
+        document.getElementById("collectDetails").style.display = "none";
+        setActiveTopic("reservation");
+    });
+
+    document.getElementById("direct").addEventListener("click", function() {
+        document.getElementById("reservationDetails").style.display = "none";
+        document.getElementById("directDetails").style.display = "block";
+        document.getElementById("collectDetails").style.display = "none";
+        setActiveTopic("direct");
+    });
+
+    document.getElementById("collect").addEventListener("click", function() {
+        document.getElementById("reservationDetails").style.display = "none";
+        document.getElementById("directDetails").style.display = "none";
+        document.getElementById("collectDetails").style.display = "block";
+        setActiveTopic("collect");
+    });
+</script>
+
+{% endblock %}

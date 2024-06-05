@@ -1,0 +1,91 @@
+{% extends 'pass/layouts/main.html' %}
+{% block title %}
+  SECURITY
+{% endblock title %} 
+
+{% block content %}
+<style>
+       body {
+        background-image: url('static/images/bgg.jpg');
+    background-size: cover;
+  }
+</style>
+  <div id="scanner-container">
+    <video id="scanner-video"></video>
+    <div id="qr-data"></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <a href="https://qrcodescan.in/" class="btn btn-primary btn-lg">Start Scan</a>
+    </div>
+  </div>
+<style>
+  .card {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease-in-out;
+  width: fit-content;
+  margin-left: 42%;
+}
+
+.card:hover {
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.3);
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+.btn {
+  background-color: #007bff;
+  border-color: #007bff;
+  border-radius: 0.25rem;
+  color: #fff;
+  display: inline-block;
+  font-size: 1.25rem;
+  font-weight: bold;
+  line-height: 1.5;
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+</style>  
+  <script src="https://cdn.jsdelivr.net/npm/instascan@1.0.1"></script>
+  <script>
+    // Initialize Instascan
+    let scanner = new Instascan.Scanner({ video: document.getElementById('scanner-video') });
+
+    scanner.addListener('scan', function (content) {
+      // When a QR code is scanned, display its data
+      document.getElementById('qr-data').innerText = content;
+    });
+
+    // Function to start scanning
+    function startScan() {
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          scanner.start(cameras[0]);
+        } else {
+          console.error('No cameras found.');
+        }
+      }).catch(function (e) {
+        console.error(e);
+      });
+    }
+
+    // Event listener for the scan button
+    document.getElementById('start-scan-btn').addEventListener('click', function() {
+      startScan();
+    });
+  </script>
+{% endblock content %}

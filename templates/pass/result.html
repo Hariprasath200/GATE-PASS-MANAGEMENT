@@ -1,0 +1,91 @@
+{% extends 'pass/layouts/main.html' %}
+{% block title %}
+  Result
+{% endblock title %} 
+
+{% block content %}
+<style>
+    body {
+        background-image: url('static/images/bgg.jpg');
+        background-size: cover;
+    }
+
+    .result-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .result-card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 400px;
+    }
+
+    .card-header {
+        background-color: #5e72e4;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .data {
+        font-size: 16px;
+        margin-top: 5px; /* Adjusted margin for better spacing */
+        padding: 0 20px;
+    }
+
+    .data-label {
+        font-weight: bold;
+        display: inline-block; /* Displaying label and data on the same line */
+        margin-bottom: 5px; /* Added margin for better spacing between fields */
+    }
+
+    .form-field {
+        margin-bottom: 15px;
+    }
+
+    .form-field label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-field input, .form-field select {
+        width: calc(100% - 10px);
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .form-field input[type="datetime-local"] {
+        width: calc(100% - 10px);
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .btn {
+        background-color: #5e72e4;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #4b5a99;
+    }
+</style>
+<h1>QR Code Scanned Successfully</h1>
+    <p>Scanned Data: {{ qr_data }}</p>
+
+{% endblock content %}

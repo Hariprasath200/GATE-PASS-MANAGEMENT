@@ -1,0 +1,85 @@
+{% extends 'pass/layouts/main.html' %}
+
+{% block title %}
+  Register
+{% endblock title %} 
+
+{% block content %}
+<div class="container-fluid bg-light py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Register</h4>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.help_text %}
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+              <small class="text-danger">{{ error }}</small>
+              {% endfor %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  /* Center the form */
+form {
+    width: 300px;
+    margin: 0 auto;
+}
+
+/* Style form inputs and buttons */
+input[type="text"],
+input[type="password"],
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Style form container */
+.container {
+    padding: 16px;
+}
+
+/* Style form labels */
+label {
+    margin-bottom: 10px;
+    display: block;
+    font-weight: bold;
+}
+
+/* Style form errors */
+.error-message {
+    color: red;
+    font-size: 14px;
+}
+
+</style>
+{% endblock content %}

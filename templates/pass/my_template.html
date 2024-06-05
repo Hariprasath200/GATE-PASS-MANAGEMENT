@@ -1,0 +1,21 @@
+{% extends 'pass/layouts/main.html' %}
+{% block title %}
+  Back
+{% endblock title %} 
+
+ 
+{% block content %}
+<script>
+    window.addEventListener('popstate', function(event) {
+        // Check if the back button was clicked and if the session variable is set
+        if (event.state && event.state.page && event.state.visited_my_page) {
+            // Redirect to the logout page
+            window.location.href = "{% url 'logout' %}";
+        }
+    });
+
+    // Push a state into the history stack when the page loads
+    window.history.pushState({ page: 'my_template', visited_my_page: true }, "", "");
+</script>
+
+{% endblock content %}
